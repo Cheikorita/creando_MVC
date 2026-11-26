@@ -15,4 +15,7 @@ Route::get('/carta', [CartaController::class, "index"])->name("carta");
 Route::get('/carta/{codigo}', [CartaController::class, "view"])->name("vista_producto");
 
 // ruta del horario
-Route::get('/horario', [HorarioController::class, "index"])->name("horario");
+Route::get('/horario', [HorarioController::class, "index"])->name("vista_horario");
+
+// ruta del horario de cada uno
+Route::get('/horario/{dia}', [HorarioController::class, "dia"])->name("vista_horario_personal");

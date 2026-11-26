@@ -8,22 +8,29 @@ class HorarioController extends Controller
 {
     // Queremos que salga el horario
     public function index() {
-        return view('horario.index', ['dia' => $this->horario()]);
+        return view('horario.index', ['horario' => $this->horario()]);
     }
 
-    public function view($dia) {
+
+    // Entra el parámetro $dia es el parametro que entra, que uso cuando llamo el generador de ruta en la vista <li> <a href="{{ route('vista_horario_personal', ['dia' => $dia['dia'] ]) }}">
+    public function dia($dia) {
         $horario = $this->horario();
         $resul = [];
 
-        foreach ( $horario as $dia) {
-            if ( $horario['dia']  === $dia ) {
-            $resultado = $dia;
+        foreach ( $horario as $d) {
+            if ( $d['dia']  === $dia ) {
+            $resul = $d;
             break;
             }
         }
 
+        $todos = $this->trabajadores();
+        $trabajador_dia = $resul['dia'];
+        $t = $todos[$trabajador_dia];
+        // dd($t);
+
         if ( !empty($resul)) {
-            return view('horario.viwe', ['dia' => $dia]);
+            return view('horario.view', ['dia' => $resul,'trabajadores' => $t]);
         }
 
         abort(404, 'Producto no hallado');
@@ -38,6 +45,18 @@ class HorarioController extends Controller
             ["dia" => "Viernes",    "frase" => "Cierra la semana con orgullo por lo logrado."],
             ["dia" => "Sabado",     "frase" => "Hoy toca desconectar para volver a conectar."],
             ["dia" => "Domingo",    "frase" => "Recarga energías; lo mejor está por venir."],
+        ];
+    }
+
+    private function trabajadores() {
+        return [
+            "Lunes"     => ["Erlantz",  "Eneko"],
+            "Martes"    => ["Erlantz",  "Rocio"],
+            "Miercoles" => ["Erlantz",  "Rocio"],
+            "Jueves"    => ["Rocio",    "Eneko"],
+            "Viernes"   => ["Rocio",    "Eneko"],
+            "Sabado"    => ["Rocio",    "Eneko"],
+            "Domingo"   => ["Rocio",    "Eneko"],
         ];
     }
 
